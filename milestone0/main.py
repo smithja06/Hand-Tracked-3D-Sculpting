@@ -11,6 +11,9 @@ MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/han
 MODEL_PATH = Path(__file__).with_name("hand_landmarker.task")
 # Resize only the displayed preview; landmark detection still uses the full frame.
 PREVIEW_SCALE = 0.75
+# Request a wide camera mode; the driver may fall back if it does not support it.
+CAPTURE_WIDTH = 1280
+CAPTURE_HEIGHT = 720
 
 
 def main():
@@ -23,8 +26,22 @@ def main():
 
     # Open camera 1 (the selected webcam on this computer).
     camera = cv2.VideoCapture(1)
+    camera.set(
+        cv2.CAP_PROP_FRAME_WIDTH,  # Camera setting for capture width.
+        CAPTURE_WIDTH,  # Request a 1280-pixel-wide frame.
+    )
+    camera.set(
+        cv2.CAP_PROP_FRAME_HEIGHT,  # Camera setting for capture height.
+        CAPTURE_HEIGHT,  # Request a 720-pixel-tall frame.
+    )
     if not camera.isOpened():
         raise RuntimeError("Could not open camera 1")
+    print(
+        "Camera resolution:",
+        int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)),
+        "x",
+        int(camera.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+    )
 
     # Configure MediaPipe to follow up to two hands in a video stream.
     options = mp.tasks.vision.HandLandmarkerOptions(
