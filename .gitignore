@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# MediaPipe hand-landmarker model downloaded on first run
+milestone0/hand_landmarker.task

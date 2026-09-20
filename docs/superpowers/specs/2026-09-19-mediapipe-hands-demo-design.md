@@ -7,11 +7,11 @@ Provide a minimal local Python demo that shows webcam frames with MediaPipe hand
 ## Design
 
 - `milestone0/main.py` opens the default camera with OpenCV.
-- Each frame is mirrored, converted to RGB, and processed by MediaPipe Hands.
+- Each frame is mirrored, converted to RGB, and processed by the current MediaPipe Tasks hand landmarker.
 - The window draws landmarks and hand connections for up to two hands.
 - Pressing `q` closes the window and releases the camera.
 - If camera 0 cannot open, the program raises a clear error.
-- `requirements.txt` contains only `mediapipe` and `opencv-python`.
+- `requirements.txt` contains only `mediapipe` and `opencv-python`; the official model downloads once to `milestone0/hand_landmarker.task`.
 
 ## Validation
 
@@ -20,4 +20,4 @@ Provide a minimal local Python demo that shows webcam frames with MediaPipe hand
 
 ## Out of Scope
 
-No 3D mesh editing, gesture recognition, recording, UI controls, or model downloads beyond package installation.
+No 3D mesh editing, gesture recognition, recording, or UI controls.
