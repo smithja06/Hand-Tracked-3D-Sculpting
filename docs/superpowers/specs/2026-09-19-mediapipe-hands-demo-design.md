@@ -15,7 +15,6 @@ Provide a minimal local Python demo that shows webcam frames with MediaPipe hand
 
 ## Validation
 
-- A small test verifies the file exposes a runnable entry point without opening a camera.
 - Manual run: `python milestone0/main.py`; confirm landmarks follow a hand and `q` exits.
 
 ## Out of Scope
