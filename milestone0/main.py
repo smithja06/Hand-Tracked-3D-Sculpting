@@ -20,7 +20,7 @@ def main():
         )
 
     # Open camera 0 (normally the built-in webcam).
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(1)
     if not camera.isOpened():
         raise RuntimeError("Could not open camera 0")
 
