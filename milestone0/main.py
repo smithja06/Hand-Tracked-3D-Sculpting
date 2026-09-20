@@ -9,6 +9,8 @@ import mediapipe as mp
 # MediaPipe's pre-trained hand-landmark model, downloaded once on first run.
 MODEL_URL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task"
 MODEL_PATH = Path(__file__).with_name("hand_landmarker.task")
+# Resize only the displayed preview; landmark detection still uses the full frame.
+PREVIEW_SCALE = 0.75
 
 
 def main():
@@ -19,10 +21,10 @@ def main():
             MODEL_PATH,  # Local path where the download is saved.
         )
 
-    # Open camera 0 (normally the built-in webcam).
+    # Open camera 1 (the selected webcam on this computer).
     camera = cv2.VideoCapture(1)
     if not camera.isOpened():
-        raise RuntimeError("Could not open camera 0")
+        raise RuntimeError("Could not open camera 1")
 
     # Configure MediaPipe to follow up to two hands in a video stream.
     options = mp.tasks.vision.HandLandmarkerOptions(
@@ -81,10 +83,18 @@ def main():
                             (0, 0, 255),  # Red dot colour in OpenCV's BGR order.
                             -1,  # Negative thickness fills the circle.
                         )
-                # Show the annotated frame; press q to stop.
+                # Shrink the full frame for display without cropping it.
+                preview = cv2.resize(
+                    frame,  # Full annotated camera frame.
+                    None,  # Let OpenCV calculate the output size from the scale values.
+                    fx=PREVIEW_SCALE,  # Horizontal scale: 75% of the original width.
+                    fy=PREVIEW_SCALE,  # Vertical scale: 75% of the original height.
+                    interpolation=cv2.INTER_AREA,  # Crisp downscaling method.
+                )
+                # Show the resized preview; press q to stop.
                 cv2.imshow(
                     "MediaPipe Hands",  # Preview-window title.
-                    frame,  # Image to show in that window.
+                    preview,  # Resized image to show in that window.
                 )
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
